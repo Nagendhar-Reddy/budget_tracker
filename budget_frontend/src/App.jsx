@@ -7,7 +7,7 @@ import TransactionList from './components/TransactionList';
 import BudgetManager from './components/BudgetManager';
 
 
-const API_URL = 'http://localhost:8000/api';
+const API_URL =process.env.REACT_APP_API_URL || 'http://localhost:8000/api';
 
 function App() {
   const [token, setToken] = useState(localStorage.getItem('token'));
