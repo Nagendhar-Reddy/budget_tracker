@@ -165,7 +165,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
     "https://budget-tracker-ewo5.onrender.com",
-    "https://budget-tracker-seven-teal.vercel.app/"
+    "https://budget-tracker-seven-teal.vercel.app"
 ]
 
 
