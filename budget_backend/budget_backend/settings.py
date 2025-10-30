@@ -27,7 +27,10 @@ SECRET_KEY = 'django-insecure-*%a6j&#el(1j-w)2e12cp9%e2n0uiezwb_*w6$q^n86rf+c8q-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['budget-tracker-ewo5.onrender.com',    '.onrender.com',
+                     'localhost',
+    '127.0.0.1',
+]
 
 
 # Application definition
@@ -161,6 +164,7 @@ CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
+    "https://budget-tracker-ewo5.onrender.com"
 ]
 
 
