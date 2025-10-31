@@ -1,18 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Login from './components/Login';
+import Register from './components/Register';
 import Dashboard from './components/Dashboard';
 import TransactionForm from './components/TransactionForm';
 import TransactionList from './components/TransactionList';
 import BudgetManager from './components/BudgetManager';
 
-
-const API_URL =process.env.REACT_APP_API_URL || 'http://localhost:8000/api';
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000/api';
 
 function App() {
   const [token, setToken] = useState(localStorage.getItem('token'));
   const [user, setUser] = useState(null);
   const [activeTab, setActiveTab] = useState('dashboard');
+  const [showRegister, setShowRegister] = useState(false);
 
   useEffect(() => {
     if (token) {
@@ -32,6 +33,11 @@ function App() {
     axios.defaults.headers.common['Authorization'] = `Token ${tokenData}`;
   };
 
+  const handleRegister = (tokenData, userData) => {
+    // Same as login - auto-login after registration
+    handleLogin(tokenData, userData);
+  };
+
   const handleLogout = async () => {
     try {
       await axios.post(`${API_URL}/logout/`);
@@ -45,10 +51,28 @@ function App() {
     delete axios.defaults.headers.common['Authorization'];
   };
 
+  // Show Login or Register page if not authenticated
   if (!token) {
-    return <Login onLogin={handleLogin} apiUrl={API_URL} />;
+    if (showRegister) {
+      return (
+        <Register 
+          onRegister={handleRegister}
+          onSwitchToLogin={() => setShowRegister(false)}
+          apiUrl={API_URL}
+        />
+      );
+    } else {
+      return (
+        <Login 
+          onLogin={handleLogin}
+          onSwitchToRegister={() => setShowRegister(true)}
+          apiUrl={API_URL}
+        />
+      );
+    }
   }
 
+  // Main App (after login)
   return (
     <div>
       <div className="header">
