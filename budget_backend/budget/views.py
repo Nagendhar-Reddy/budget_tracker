@@ -18,6 +18,53 @@ except ImportError:
 
 @api_view(['POST'])
 @permission_classes([AllowAny])
+def register_view(request):
+    username = request.data.get('username')
+    email = request.data.get('email')
+    password = request.data.get('password')
+    password2 = request.data.get('password2')
+    
+    # Validation
+    if not username or not password:
+        return Response({'error': 'Username and password are required'}, status=status.HTTP_400_BAD_REQUEST)
+    
+    if password != password2:
+        return Response({'error': 'Passwords do not match'}, status=status.HTTP_400_BAD_REQUEST)
+    
+    if len(password) < 6:
+        return Response({'error': 'Password must be at least 6 characters'}, status=status.HTTP_400_BAD_REQUEST)
+    
+    # Check if username already exists
+    if User.objects.filter(username=username).exists():
+        return Response({'error': 'Username already exists'}, status=status.HTTP_400_BAD_REQUEST)
+    
+    # Check if email already exists
+    if email and User.objects.filter(email=email).exists():
+        return Response({'error': 'Email already exists'}, status=status.HTTP_400_BAD_REQUEST)
+    
+    # Create user
+    try:
+        user = User.objects.create_user(
+            username=username,
+            email=email,
+            password=password
+        )
+        
+        # Create token for auto-login after registration
+        token, _ = Token.objects.get_or_create(user=user)
+        
+        return Response({
+            'message': 'User created successfully',
+            'token': token.key,
+            'user': UserSerializer(user).data
+        }, status=status.HTTP_201_CREATED)
+    
+    except Exception as e:
+        return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['POST'])
+@permission_classes([AllowAny])
 def login_view(request):
     username = request.data.get('username')
     password = request.data.get('password')
