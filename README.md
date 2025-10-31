@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 # 💰 Personal Budget Tracker
 
 A full-stack web application for tracking income, expenses, and managing monthly budgets with interactive data visualizations.
@@ -115,6 +115,7 @@ Password: testpass123
 ## 📊 API Endpoints
 
 ### Authentication
+- - `POST /api/register/` - User login
 - `POST /api/login/` - User login
 - `POST /api/logout/` - User logout
 
